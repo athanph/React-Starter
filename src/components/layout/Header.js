@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Nav from './Nav'
+import Logo from '../modules/Logo'
+import Nav from '../modules/Nav'
 
 const HeadContainer = styled.header`
 	padding: 1rem;
@@ -12,7 +13,7 @@ const HeadContainer = styled.header`
 function Header() {
 	return (
 		<HeadContainer>
-			<h1>React Starter Kit</h1>
+			<Logo />
 			<Nav />
 		</HeadContainer>
 	)

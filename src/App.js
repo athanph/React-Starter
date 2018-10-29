@@ -4,11 +4,11 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import './styles/main.scss'
 
-import NoMatch from './pages/NoMatch'
-import Index from './pages/Index'
-import Header from './common/Header'
-import Footer from './common/Footer'
-import Main from './common/Main'
+import NoMatch from './components/pages/NoMatch'
+import Index from './components/pages/Index'
+import Header from './components/layout/Header'
+import Footer from './components/layout/Footer'
+import Main from './components/layout/Main'
 import ErrorBoundary from './utils/ErrorBoundary'
 
 class App extends Component {
