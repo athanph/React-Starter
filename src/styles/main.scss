@@ -1,3 +1,5 @@
+@import '~sanitize.css';
+
 /* https://css-tricks.com/snippets/css/system-font-stack/ */
 @font-face {
 	font-family: system;
@@ -16,6 +18,7 @@ body {
 
 a {
 	color: #fff;
+	text-decoration: none;
 	&:hover {
 		color: darken(#fff, 15%);
 	}

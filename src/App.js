@@ -8,6 +8,7 @@ import NoMatch from './pages/NoMatch'
 import Index from './pages/Index'
 import Header from './common/Header'
 import Footer from './common/Footer'
+import Main from './common/Main'
 import ErrorBoundary from './utils/ErrorBoundary'
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
 		return (
 			<>
 				<Header />
-				<main>
+				<Main>
 					<ErrorBoundary>
 						<Switch>
 							<Redirect from="/index" to="/" />
@@ -24,7 +25,7 @@ class App extends Component {
 							<Route component={NoMatch} />
 						</Switch>
 					</ErrorBoundary>
-				</main>
+				</Main>
 				<Footer />
 			</>
 		)
