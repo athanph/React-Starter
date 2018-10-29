@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 
-import { Switch, Route, Redirect } from 'react-router-dom'
+import routes from './routes'
 
 import './styles/main.scss'
 
-import NoMatch from './components/pages/NoMatch'
-import Index from './components/pages/Index'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Main from './components/layout/Main'
+
 import ErrorBoundary from './utils/ErrorBoundary'
 
 class App extends Component {
@@ -17,14 +16,7 @@ class App extends Component {
 			<>
 				<Header />
 				<Main>
-					<ErrorBoundary>
-						<Switch>
-							<Redirect from="/index" to="/" />
-							<Route path="/" exact component={Index} />
-							<Route path="/about" exact render={() => <div>About Us</div>} />
-							<Route component={NoMatch} />
-						</Switch>
-					</ErrorBoundary>
+					<ErrorBoundary>{routes}</ErrorBoundary>
 				</Main>
 				<Footer />
 			</>
