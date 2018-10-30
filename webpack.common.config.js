@@ -1,6 +1,7 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
 
 var BUILD_DIR = path.resolve(__dirname, 'dist')
 var APP_DIR = path.resolve(__dirname, './src')
@@ -110,6 +111,7 @@ const config = {
 			inject: true,
 		}),
 		new CleanWebpackPlugin(['dist']),
+		new StyleLintPlugin(),
 	],
 	optimization: {
 		runtimeChunk: 'single',
