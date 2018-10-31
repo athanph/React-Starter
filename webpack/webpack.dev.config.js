@@ -1,8 +1,8 @@
-const merge = require('webpack-merge')
-const common = require('./webpack.common.config.js')
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
-module.exports = merge(common, {
+const commonPaths = require('./paths')
+
+module.exports = {
 	mode: 'development',
 	module: {
 		rules: [
@@ -14,6 +14,7 @@ module.exports = merge(common, {
 	},
 	devtool: 'inline-source-map',
 	devServer: {
+		contentBase: commonPaths.outputPath,
 		historyApiFallback: true,
 		clientLogLevel: 'error',
 		compress: true,
@@ -27,4 +28,4 @@ module.exports = merge(common, {
 		// port: 4000,
 	},
 	plugins: [new SimpleProgressWebpackPlugin({ format: 'expanded' })],
-})
+}

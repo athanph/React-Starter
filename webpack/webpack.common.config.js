@@ -1,25 +1,18 @@
-const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-var BUILD_DIR = path.resolve(__dirname, 'dist')
-var APP_DIR = path.resolve(__dirname, './src')
+const commonPaths = require('./paths')
 
 const config = {
-	// 'entry' is where the application starts executing
-	// and webpack starts bundling
 	entry: {
-		main: `${APP_DIR}/index.js`,
+		main: commonPaths.entryPath,
 	},
 	output: {
-		// `path` is the folder where Webpack will place your bundles
-		path: BUILD_DIR,
-		// `publicPath` is where Webpack will load your bundles from (optional)
-		publicPath: '/',
-		// `filename` provides a template for naming your bundles (remember to use `[name]`)
+		path: commonPaths.outputPath,
 		filename: '[name].[hash].js',
-		// `chunkFilename` provides a template for naming code-split bundles (optional)
 		chunkFilename: '[name].[hash].bundle.js',
 	},
 	module: {
@@ -95,7 +88,7 @@ const config = {
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
-			template: './public/index.html',
+			template: commonPaths.templatePath,
 			minify: {
 				removeComments: true,
 				collapseWhitespace: true,
@@ -110,7 +103,9 @@ const config = {
 			},
 			inject: true,
 		}),
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin([commonPaths.outputPath.split('/').pop()], {
+			root: commonPaths.root,
+		}),
 		new StyleLintPlugin(),
 	],
 	optimization: {
@@ -130,6 +125,14 @@ const config = {
 				},
 			},
 		},
+		minimizer: [
+			new UglifyJsPlugin({
+				cache: true,
+				parallel: true,
+				sourceMap: false, // set to true if you want JS source maps
+			}),
+			new OptimizeCSSAssetsPlugin({}),
+		],
 	},
 }
 

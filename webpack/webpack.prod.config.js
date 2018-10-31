@@ -1,16 +1,6 @@
-const path = require('path')
-const webpack = require('webpack')
-const merge = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const common = require('./webpack.common.config.js')
-
-const GLOBALS = {
-	'process.env.NODE_ENV': JSON.stringify('production'),
-	__DEV__: false,
-}
-
-module.exports = merge(common, {
+module.exports = {
 	mode: 'production',
 	devtool: 'source-map',
 	module: {
@@ -29,7 +19,6 @@ module.exports = merge(common, {
 					{
 						loader: 'sass-loader',
 						options: {
-							includePaths: [path.resolve(__dirname, 'src', 'scss')],
 							sourceMap: true,
 						},
 					},
@@ -38,10 +27,9 @@ module.exports = merge(common, {
 		],
 	},
 	plugins: [
-		new webpack.DefinePlugin(GLOBALS),
 		new MiniCssExtractPlugin({
 			filename: '[name].[hash].css',
 			chunkFilename: '[id].[hash].css',
 		}),
 	],
-})
+}
