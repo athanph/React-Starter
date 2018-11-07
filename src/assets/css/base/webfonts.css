@@ -1,4 +1,8 @@
-@import url('~sanitize.css');
+/**
+ * 
+ * Project webfonts.
+ *
+ */
 
 /* https://css-tricks.com/snippets/css/system-font-stack/ */
 @font-face {
@@ -8,18 +12,4 @@
 	src: local('.SFNSText-Light'), local('.HelveticaNeueDeskInterface-Light'),
 		local('.LucidaGrandeUI'), local('Ubuntu Light'), local('Segoe UI Light'),
 		local('Roboto-Light'), local('DroidSans'), local('Tahoma');
-}
-
-body {
-	background: #333;
-	color: #eee;
-	font-family: system;
-}
-
-a {
-	color: #fff;
-	text-decoration: none;
-	&:hover {
-		color: darken(#fff, 15%);
-	}
 }

@@ -1,0 +1,11 @@
+/**
+ *
+ * Project-wide styles
+ *
+ */
+
+body {
+	background: #ddd;
+	color: #333;
+	font-family: system;
+}

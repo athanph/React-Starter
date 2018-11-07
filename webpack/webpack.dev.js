@@ -1,20 +1,37 @@
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
-const commonPaths = require('./paths')
+const settings = require('./webpack.settings')
 
 module.exports = {
 	mode: 'development',
 	module: {
 		rules: [
 			{
-				test: /\.s(a|c)ss$/,
-				use: ['style-loader', 'css-loader', 'sass-loader'],
+				test: /(\.css|\.scss|\.sass)$/,
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+					{
+						loader: 'resolve-url-loader',
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+				],
 			},
 		],
 	},
 	devtool: 'inline-source-map',
 	devServer: {
-		contentBase: commonPaths.outputPath,
+		contentBase: settings.paths.output,
 		historyApiFallback: true,
 		clientLogLevel: 'error',
 		compress: true,

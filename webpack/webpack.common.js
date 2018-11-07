@@ -1,23 +1,38 @@
+const path = require('path')
+
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const WebappWebpackPlugin = require('webapp-webpack-plugin')
 
-const commonPaths = require('./paths')
+const pkg = require('../package.json')
+const settings = require('./webpack.settings')
+
+// Configure Entries
+const configureEntries = () => {
+	let entries = {}
+	for (const [key, value] of Object.entries(settings.entries)) {
+		entries[key] = settings.paths.entry + value
+	}
+
+	return entries
+}
 
 const config = {
-	entry: {
-		main: commonPaths.entryPath,
-	},
+	entry: configureEntries(),
 	output: {
-		path: commonPaths.outputPath,
-		filename: '[name].[hash].js',
-		chunkFilename: '[name].[hash].bundle.js',
+		path: settings.paths.output,
+		filename: path.join(settings.paths.js, '[name].[hash].js'),
+		chunkFilename: path.join(settings.paths.js, '[name].[hash].bundle.js'),
+	},
+	resolve: {
+		modules: ['src', 'node_modules'],
+		extensions: ['*', '.js', '.jsx', '.css', '.scss'],
 	},
 	module: {
 		rules: [
-			// rules for modules (configure loaders, parser options, etc.)
 			{
 				test: /\.(js|jsx)?$/,
 				exclude: /node_modules/,
@@ -88,7 +103,7 @@ const config = {
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
-			template: commonPaths.templatePath,
+			template: settings.paths.template,
 			minify: {
 				removeComments: true,
 				collapseWhitespace: true,
@@ -103,8 +118,26 @@ const config = {
 			},
 			inject: true,
 		}),
-		new CleanWebpackPlugin([commonPaths.outputPath.split('/').pop()], {
-			root: commonPaths.root,
+		new WebappWebpackPlugin({
+			logo: settings.webappConfig.logo,
+			cache: true,
+			prefix: settings.webappConfig.prefix,
+			inject: 'force',
+			favicons: {
+				// options: https://github.com/itgalaxy/favicons#usage
+				appName: pkg.name,
+				appDescription: pkg.description,
+				developerName: pkg.author.name,
+				developerURL: pkg.author.url,
+				path: settings.paths.output,
+				icons: {
+					coast: false,
+					yandex: false,
+				},
+			},
+		}),
+		new CleanWebpackPlugin([settings.paths.output.split('/').pop()], {
+			root: settings.paths.root,
 		}),
 		new StyleLintPlugin(),
 	],
@@ -126,7 +159,7 @@ const config = {
 			},
 		},
 		minimizer: [
-			new UglifyJsPlugin({
+			new TerserPlugin({
 				cache: true,
 				parallel: true,
 				sourceMap: false, // set to true if you want JS source maps

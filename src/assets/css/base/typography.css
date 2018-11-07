@@ -1,0 +1,13 @@
+/**
+ * 
+ * Typography rules.
+ *
+ */
+
+a {
+	color: #fff;
+	text-decoration: none;
+	&:hover {
+		color: darken(#fff, 15%);
+	}
+}

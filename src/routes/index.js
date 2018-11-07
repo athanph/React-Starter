@@ -1,8 +1,10 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
-import NoMatch from '../components/pages/NoMatch'
-import Index from '../components/pages/Index'
+import Loadabler from '../utils/Loadabler'
+
+const NoMatch = Loadabler({ loader: () => import('../components/pages/NoMatch') })
+const Index = Loadabler({ loader: () => import('../components/pages/Index') })
 
 const routes = (
 	<Switch>

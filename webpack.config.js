@@ -1,5 +1,6 @@
-const common = require('./webpack/webpack.common.config')
 const webpackMerge = require('webpack-merge')
+
+const common = require('./webpack/webpack.common')
 
 const envs = {
 	development: 'dev',
@@ -8,7 +9,7 @@ const envs = {
 
 module.exports = env => {
 	const environment = envs[env || 'development']
-	const envConfig = require(`./webpack/webpack.${environment}.config.js`)
+	const envConfig = require(`./webpack/webpack.${environment}.js`)
 
 	return webpackMerge(common, envConfig)
 }
