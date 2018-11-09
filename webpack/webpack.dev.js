@@ -7,7 +7,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /(\.css|\.scss|\.sass)$/,
+				test: /\.(css|scss|sass)$/,
 				use: [
 					'style-loader',
 					{
@@ -31,7 +31,8 @@ module.exports = {
 	},
 	devtool: 'inline-source-map',
 	devServer: {
-		contentBase: settings.paths.output,
+		contentBase: settings.paths.clientOutput,
+		index: 'index.html',
 		historyApiFallback: true,
 		clientLogLevel: 'error',
 		compress: true,
@@ -42,7 +43,7 @@ module.exports = {
 			errors: true,
 		},
 		// host: 'localhost',
-		// port: 4000,
+		port: 3000,
 	},
 	plugins: [new SimpleProgressWebpackPlugin({ format: 'expanded' })],
 }

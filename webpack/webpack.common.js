@@ -1,11 +1,13 @@
 const path = require('path')
 
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+// const HtmlWebPackPlugin = require('html-webpack-plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebappWebpackPlugin = require('webapp-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { ReactLoadablePlugin } = require('react-loadable/webpack')
 
 const pkg = require('../package.json')
 const settings = require('./webpack.settings')
@@ -14,18 +16,19 @@ const settings = require('./webpack.settings')
 const configureEntries = () => {
 	let entries = {}
 	for (const [key, value] of Object.entries(settings.entries)) {
-		entries[key] = settings.paths.entry + value
+		entries[key] = settings.paths.clientEntry + value
 	}
 
 	return entries
 }
 
-const config = {
+module.exports = {
 	entry: configureEntries(),
 	output: {
-		path: settings.paths.output,
-		filename: path.join(settings.paths.js, '[name].[hash].js'),
+		path: settings.paths.clientOutput,
+		filename: path.join(settings.paths.js, 'index.js'),
 		chunkFilename: path.join(settings.paths.js, '[name].[hash].bundle.js'),
+		publicPath: settings.paths.webpackServeUrl,
 	},
 	resolve: {
 		modules: ['src', 'node_modules'],
@@ -102,22 +105,28 @@ const config = {
 		],
 	},
 	plugins: [
-		new HtmlWebPackPlugin({
-			template: settings.paths.template,
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeRedundantAttributes: true,
-				useShortDoctype: true,
-				removeEmptyAttributes: true,
-				removeStyleLinkTypeAttributes: true,
-				keepClosingSlash: true,
-				minifyJS: true,
-				minifyCSS: true,
-				minifyURLs: true,
-			},
-			inject: true,
+		new webpack.DefinePlugin({
+			__isBrowser__: 'true',
 		}),
+		new ReactLoadablePlugin({
+			filename: settings.paths.root + '/dist/react-loadable.json',
+		}),
+		// new HtmlWebPackPlugin({
+		// 	template: settings.paths.template,
+		// 	minify: {
+		// 		removeComments: true,
+		// 		collapseWhitespace: true,
+		// 		removeRedundantAttributes: true,
+		// 		useShortDoctype: true,
+		// 		removeEmptyAttributes: true,
+		// 		removeStyleLinkTypeAttributes: true,
+		// 		keepClosingSlash: true,
+		// 		minifyJS: true,
+		// 		minifyCSS: true,
+		// 		minifyURLs: true,
+		// 	},
+		// 	inject: true,
+		// }),
 		new WebappWebpackPlugin({
 			logo: settings.webappConfig.logo,
 			cache: true,
@@ -129,14 +138,14 @@ const config = {
 				appDescription: pkg.description,
 				developerName: pkg.author.name,
 				developerURL: pkg.author.url,
-				path: settings.paths.output,
+				path: settings.paths.clientOutput,
 				icons: {
 					coast: false,
 					yandex: false,
 				},
 			},
 		}),
-		new CleanWebpackPlugin([settings.paths.output.split('/').pop()], {
+		new CleanWebpackPlugin([settings.paths.clientOutput], {
 			root: settings.paths.root,
 		}),
 		new StyleLintPlugin(),
@@ -168,5 +177,3 @@ const config = {
 		],
 	},
 }
-
-module.exports = config

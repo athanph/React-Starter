@@ -21,7 +21,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /(\.css|\.scss|\.sass)$/,
+				test: /\.(css|scss|sass)$/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					{
@@ -46,7 +46,7 @@ module.exports = {
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
-			path: settings.paths.dist,
+			path: settings.paths.clientOutput,
 			filename: path.join(settings.paths.css, '[name].[chunkhash].css'),
 		}),
 		new PurgecssPlugin({
